@@ -4,13 +4,13 @@ import { CreateArquivoDto } from './dto/create-arquivo.dto';
 import { UpdateArquivoDto } from './dto/update-arquivo.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
-import {diskStorage} from 'multer';
+import { diskStorage } from 'multer';
 
 @Controller('arquivo')
 export class ArquivoController {
-  constructor(private readonly arquivoService: ArquivoService) {}
+  constructor(private readonly arquivoService: ArquivoService) { }
 
-    @Post('upload')
+  @Post('upload')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -23,10 +23,11 @@ export class ArquivoController {
       }),
     }),
   )
-  uploadFile(@UploadedFile() file:Express.Multer.File){
-    if(!file){
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    if (!file) {
       throw new BadRequestException('Nenhum arquivo enviado.');
     }
+    return this.arquivoService.create(file);
   }
   @Get()
   findAll() {
