@@ -7,34 +7,38 @@ import * as fs from 'fs';
 export class ArquivoService {
   private readonly pastaUpload = './drive';
 
-  constructor(){
-    if(!fs.existsSync(this.pastaUpload)){
-      fs.mkdirSync(this.pastaUpload,{recursive:true});
+  constructor() {
+    if (!fs.existsSync(this.pastaUpload)) {
+      fs.mkdirSync(this.pastaUpload, { recursive: true });
     }
   }
-//Retorna os dados do arquivo após o upload
+  //Retorna os dados do arquivo após o upload
   create(arquivo: Express.Multer.File) {
-     return {
-      message:'Arquivo enviado com sucesso!',
-      filename:arquivo.filename,
-      originalname:arquivo.originalname,
-      size:arquivo.size,
-     };
+    return {
+      message: 'Arquivo enviado com sucesso!',
+      filename: arquivo.filename,
+      originalname: arquivo.originalname,
+      size: arquivo.size,
+    };
   }
 
   findAll() {
     try {
       const files = fs.readdirSync(this.pastaUpload);
       const fileList = files.map(
-        (filename)=>{
+        (filename) => {
           const stats = fs.statSync(`${this.pastaUpload}/${filename}`);
-          return{
+          return {
             filename,
-            size:stats.size,
-            criado:stats.birthtime,
-          }
+            size: stats.size,
+            criado: stats.birthtime,
+          };
         }
       );
+      return {
+        total: fileList.length,
+        files: fileList,
+      };
     } catch (error) {
       throw new BadRequestException('Não foi possivel listar os arquivos.')
     }
