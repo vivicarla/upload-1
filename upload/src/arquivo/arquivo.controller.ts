@@ -1,16 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, BadRequestException, UseFilters } from '@nestjs/common';
 import { ArquivoService } from './arquivo.service';
 import { CreateArquivoDto } from './dto/create-arquivo.dto';
 import { UpdateArquivoDto } from './dto/update-arquivo.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import { diskStorage } from 'multer';
+import { MulterExceptionFilter } from './filters/multer-exception.filter';
 
 @Controller('arquivo')
 export class ArquivoController {
   constructor(private readonly arquivoService: ArquivoService) { }
 
   @Post('upload')
+  @UseFilters(MulterExceptionFilter)
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -21,6 +23,19 @@ export class ArquivoController {
           callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
         },
       }),
+      limits: {
+        fileSize: 5 * 1024 * 1024, // Limite de 5MB para uploads
+      },
+      fileFilter: (req, file, cb) => {
+        const allowedExts = ['.jpg', '.jpeg', '.png', '.tif', '.tiff'];
+        const fileExt = extname(file.originalname).toLowerCase();
+
+        if (!allowedExts.includes(fileExt)) {
+          return cb(new BadRequestException('Formato de arquivo não permitido. Somente JPG, PNG e TIFF são aceitos.'), false);
+        }
+
+        cb(null, true);
+      },
     }),
   )
   uploadFile(@UploadedFile() file: Express.Multer.File) {
@@ -32,6 +47,11 @@ export class ArquivoController {
   @Get()
   findAll() {
     return this.arquivoService.findAll();
+  }
+
+  @Delete('nome/:filename')
+  removeByFilename(@Param('filename') filename: string) {
+    return this.arquivoService.removeByFilename(filename);
   }
 
   @Get(':id')
