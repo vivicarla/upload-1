@@ -1,5 +1,4 @@
-# uploadCerto
-
+# API para Uploads
 API NestJS para upload e gerenciamento simples de arquivos com validação de tamanho e tipos de imagem.
 
 ## Pré-requisitos
