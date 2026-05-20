@@ -14,13 +14,13 @@ API NestJS para upload e gerenciamento simples de arquivos com validação de ta
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/uploadCerto.git
+git clone https://github.com/zenakio/upload-1.git
 ```
 
 2. Entre na pasta da aplicação:
 
 ```bash
-cd uploadCerto/upload
+cd /upload/
 ```
 
 3. Instale as dependências:
@@ -177,45 +177,15 @@ curl -X DELETE http://localhost:3000/arquivo/nome/file-168xxx123.jpg
 }
 ```
 
-### 4. Buscar arquivo por ID (placeholder)
+### 4. Endpoints por ID (não implementados)
 
-- Método: `GET`
-- Rota: `/arquivo/:id`
-- Parâmetros:
-  - `id` (URL) - identificador numérico do arquivo
+As rotas geradas pelo resource do NestJS para `GET /arquivo/:id`, `PATCH /arquivo/:id` e `DELETE /arquivo/:id` são atualmente placeholders e não fazem parte do fluxo de upload/removal real deste projeto.
 
-#### Exemplo de resposta de sucesso
+- `GET /arquivo/:id` - placeholder gerado automaticamente
+- `PATCH /arquivo/:id` - placeholder gerado automaticamente
+- `DELETE /arquivo/:id` - placeholder gerado automaticamente
 
-```text
-This action returns a #1 arquivo
-```
-
-### 5. Atualizar arquivo por ID (placeholder)
-
-- Método: `PATCH`
-- Rota: `/arquivo/:id`
-- Parâmetros:
-  - `id` (URL) - identificador numérico do arquivo
-  - Corpo: `UpdateArquivoDto` (não implementado neste projeto)
-
-#### Exemplo de resposta de sucesso
-
-```text
-This action updates a #1 arquivo
-```
-
-### 6. Remover arquivo por ID (placeholder)
-
-- Método: `DELETE`
-- Rota: `/arquivo/:id`
-- Parâmetros:
-  - `id` (URL) - identificador numérico do arquivo
-
-#### Exemplo de resposta de sucesso
-
-```text
-This action removes a #1 arquivo
-```
+> Nota: a remoção efetiva de arquivo implementada neste projeto é feita apenas por nome, via `DELETE /arquivo/nome/:filename`.
 
 ## Observações
 
