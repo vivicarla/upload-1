@@ -15,6 +15,8 @@ export class App implements OnInit {
   selectedFile: File | null = null;
   message = '';
 
+  readonly API_URL_FILES = 'http://localhost:3000/uploads';
+  
   constructor(private fileService: FileService) {}
 
   ngOnInit() {
